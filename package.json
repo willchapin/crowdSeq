@@ -1,0 +1,17 @@
+{
+    "name": "crowdSeq",
+    "version": "0.0.0",
+    "author": {
+        "name": "Will Chapin", 
+        "email": "wrchapin@gmail.com" 
+    },
+    "contributors": [{
+        "name": "Paul Wang",
+        "email": "paulwang727@gmail.com"
+    }],
+    "description": "Crowd driven music sequencer",
+    "dependencies": {
+        "express": "3.4.6",
+        "socket.io": "0.9.16"
+    }
+}
