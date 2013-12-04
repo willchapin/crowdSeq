@@ -12,17 +12,23 @@ body {
 }
 
 button {
-    border: 0 none;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    border: 2px solid #86f5ff;
+    background-color:rgba(0, 169, 254, 0.3);
     height: 50px;
-    margin: 3px;
+    margin: 0;
+    outline: none;
     padding: 0;
     width: 50px;
 }
 
 button.playing {
-    background-color: red;
+    border: 2px solid rgba(255, 255, 0, 0.9);
+    background-color: rgba(249, 247, 0, 0.5);
 }
 
 button.on {
-    background-color: green;
+    background-color: rgba(0, 244, 249, 1);
 }
