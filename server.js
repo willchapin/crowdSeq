@@ -11,7 +11,7 @@ app.configure(function() {
     app.use(express.static(__dirname + '/static'));
 });
 
-server.listen(8080);
+server.listen(8080, '0.0.0.0');
 
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
