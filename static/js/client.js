@@ -1,23 +1,30 @@
 ;(function(){
 
-  var row = 8;
-  var col = 32;
-
+  var row = 10;
+  var col = 10;
+  var rowCls = "row";
 
   var buttonWidth = 20;
   var buttonHeight = 20;
 
-
-  var ctx = new webkitAudioContext();    
-  var count = 0;
- 
+  var count = 0; 
   var _interval = null;
   var intervalTime = 100;
+
+  var _mouseDown = false;
 
   var freqs = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
   var buttons = document.getElementsByTagName("button");
 
-  var rowCls = "row";
+  var ctx = new webkitAudioContext();    
+  
+  var requestAnimFrame = (function(){
+    return window.requestAnimationFrame  || window.webkitRequestAnimationFrame 
+      || window.mozRequestAnimationFrame || window.oRequestAnimationFrame      
+      || window.msRequestAnimationFrame  || function(callback){
+        window.setTimeout(callback, 1000 / 60);
+      };
+  })();
 
   var colorColumn = function(index, func) {
     var el = null;
@@ -43,24 +50,15 @@
   };
 
 
-  var toggle = function(e) {
-    console.log('in here');        
-    if (utils.hasClass(this, "on")) {
-      utils.removeClass(this, "on");
-    } else {
-      utils.addClass(this, "on");
-    }
-  }
-
   var play = function (freq, dur) {
-    time = ctx.currentTime;
-    osc = ctx.createOscillator();
+    var time = ctx.currentTime;
+    var osc = ctx.createOscillator();
     osc.frequency.value = freq;
     osc.type = "triangle";
     osc.connect(ctx.destination);
     osc.start(time);
     osc.stop(time + dur);
-  }
+  };
 
 
   var step = function(maxLen) {
@@ -73,10 +71,37 @@
   
   var bindButtonsClickHandler = function() {
     for (var i = 0, len = buttons.length; i < len; i++) {
-      buttons[i].addEventListener("click", toggle)
+      buttons[i].addEventListener("click", function(){
+        utils.toggleClass(this, "on");
+      }, false)
     }
   };
 
+  var bindButtonsDragHandler = function(){
+    for(var i=0, len=buttons.length; i<len; i++){
+      buttons[i].addEventListener("mousemove", function(evt) {
+        if(_mouseDown) {
+          utils.addClass(this, "on");
+        }
+      }, false);
+    }
+  };
+
+  var bindWindowEvents = function() {
+    window.addEventListener('mousedown', function(evt){
+      _mouseDown = true;
+    }, false);
+
+    window.addEventListener('mouseup', function(evt){
+      _mouseDown = false;
+    }, false);
+  };
+
+  var bindEventHandlers = function() {
+    bindWindowEvents();
+    bindButtonsClickHandler();
+    bindButtonsDragHandler();
+  };
 
   var createButtons = function(row, col) {
     var wrapperEl = document.getElementById("wrapper");
@@ -102,15 +127,12 @@
 
   var init = function(){
     createButtons(row, col);
-    bindButtonsClickHandler();
+    bindEventHandlers();
   };
 
   var run = function() {  
-    _interval = setInterval(function() {
-      step(col);
-    }, intervalTime);
-    
     step(col);
+    requestAnimFrame(run);
   };
   
 
