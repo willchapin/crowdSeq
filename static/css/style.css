@@ -33,3 +33,7 @@ button.playing {
 button.on {
     background-color: rgba(0, 244, 249, 1);
 }
+
+button.on.playing {
+    background-color: rgba(0, 244, 249, 0.7);
+}
